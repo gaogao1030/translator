@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, PluginOption } from 'vite'
 import webExtension from '@samrum/vite-plugin-web-extension'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -16,7 +16,7 @@ export default defineConfig({
         webExtension({
             manifest: getManifest('firefox'),
             useDynamicUrlWebAccessibleResources: false,
-        }),
+        }) as PluginOption,
     ],
     resolve: {
         alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],

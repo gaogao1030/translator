@@ -3,8 +3,8 @@ import _ from 'underscore'
 import { Tabs, Tab, StyledTabList, StyledTabPanel } from 'baseui-sd/tabs-motion'
 import icon from '../assets/images/icon-large.png'
 import beams from '../assets/images/beams.jpg'
-import wechat from '../assets/images/wechat.png'
-import alipay from '../assets/images/alipay.png'
+// import wechat from '../assets/images/wechat.png'
+// import alipay from '../assets/images/alipay.png'
 import toast, { Toaster } from 'react-hot-toast'
 import * as utils from '../utils'
 import { Client as Styletron } from 'styletron-engine-atomic'
@@ -1345,36 +1345,39 @@ function ProviderSelector({ value, onChange, hasPromotion }: IProviderSelectorPr
 
     const options = utils.isDesktopApp()
         ? ([
-              { label: 'OpenAI', id: 'OpenAI' },
-              { label: `Kimi (${t('Free')})`, id: 'Kimi' },
-              { label: `${t('ChatGLM')} (${t('Free')})`, id: 'ChatGLM' },
-              { label: 'Cohere', id: 'Cohere' },
               { label: `Ollama (${t('Local Model')})`, id: 'Ollama' },
-              { label: 'Gemini', id: 'Gemini' },
+              { label: `AIGPT`, id: 'AIGPT' },
+              // { label: 'OpenAI', id: 'OpenAI' },
+              // { label: `Kimi (${t('Free')})`, id: 'Kimi' },
+              // { label: `${t('ChatGLM')} (${t('Free')})`, id: 'ChatGLM' },
+              // { label: 'Cohere', id: 'Cohere' },
+              // { label: 'Gemini', id: 'Gemini' },
               // { label: 'ChatGPT (Web)', id: 'ChatGPT' },
-              { label: 'Azure', id: 'Azure' },
-              { label: 'MiniMax', id: 'MiniMax' },
-              { label: 'Moonshot', id: 'Moonshot' },
-              { label: 'Groq', id: 'Groq' },
-              { label: 'Claude', id: 'Claude' },
-              { label: 'DeepSeek', id: 'DeepSeek' },
+              // { label: 'Azure', id: 'Azure' },
+              // { label: 'MiniMax', id: 'MiniMax' },
+              // { label: 'Moonshot', id: 'Moonshot' },
+              // { label: 'Groq', id: 'Groq' },
+              // { label: 'Claude', id: 'Claude' },
+              // { label: 'DeepSeek', id: 'DeepSeek' },
           ] as {
               label: string
               id: Provider
           }[])
         : ([
-              { label: 'OpenAI', id: 'OpenAI' },
-              { label: `Kimi (${t('Free')})`, id: 'Kimi' },
-              { label: `${t('ChatGLM')} (${t('Free')})`, id: 'ChatGLM' },
-              { label: 'ChatGPT (Web)', id: 'ChatGPT' },
-              { label: 'Cohere', id: 'Cohere' },
-              { label: 'Gemini', id: 'Gemini' },
-              { label: 'Azure', id: 'Azure' },
-              { label: 'MiniMax', id: 'MiniMax' },
-              { label: 'Moonshot', id: 'Moonshot' },
-              { label: 'Groq', id: 'Groq' },
-              { label: 'Claude', id: 'Claude' },
-              { label: 'DeepSeek', id: 'DeepSeek' },
+              { label: `Ollama (${t('Local Model')})`, id: 'Ollama' },
+              { label: `AIGPT`, id: 'AIGPT' },
+              // { label: 'OpenAI', id: 'OpenAI' },
+              // { label: `Kimi (${t('Free')})`, id: 'Kimi' },
+              // { label: `${t('ChatGLM')} (${t('Free')})`, id: 'ChatGLM' },
+              // { label: 'ChatGPT (Web)', id: 'ChatGPT' },
+              // { label: 'Cohere', id: 'Cohere' },
+              // { label: 'Gemini', id: 'Gemini' },
+              // { label: 'Azure', id: 'Azure' },
+              // { label: 'MiniMax', id: 'MiniMax' },
+              // { label: 'Moonshot', id: 'Moonshot' },
+              // { label: 'Groq', id: 'Groq' },
+              // { label: 'Claude', id: 'Claude' },
+              // { label: 'DeepSeek', id: 'DeepSeek' },
           ] as {
               label: string
               id: Provider
@@ -1837,7 +1840,7 @@ export function InnerSettings({
                             gap: 6,
                         }}
                     >
-                        OpenAI Translator
+                        AI Translator
                         {AppConfig?.version ? (
                             <a
                                 href='https://github.com/yetone/openai-translator/releases'
@@ -2063,6 +2066,67 @@ export function InnerSettings({
                                 hasPromotion={openaiAPIKeyPromotion !== undefined && !openaiAPIKeyPromotionShowed}
                             />
                         </FormItem>
+                        <div
+                            style={{
+                                display: values.provider === 'AIGPT' ? 'block' : 'none',
+                            }}
+                        >
+                            {/* <FormItem */}
+                            {/*   name='aigptAPIURL' */}
+                            {/*   label={t('API URL')} */}
+                            {/*   required={values.provider === 'AIGPT'} */}
+                            {/*   caption={t('Generally, there is no need to modify this item.')} */}
+                            {/* > */}
+                            {/*   <Input size='compact' onBlur={onBlur} /> */}
+                            {/* </FormItem> */}
+                            <FormItem
+                                required={values.provider === 'AIGPT'}
+                                name='apiKeys'
+                                label='AIGPT Code'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?tabs=command-line&pivots=rest-api#retrieve-key-and-endpoint'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            {t('Azure OpenAI Service page')}
+                                        </a>{' '}
+                                        {t(
+                                            'to get your API Key. You can separate multiple API Keys with English commas to achieve quota doubling and load balancing.'
+                                        )}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='aigptAPIModel'
+                                label={t('API Model')}
+                                required={values.provider === 'AIGPT'}
+                                caption={
+                                    <div>
+                                        <div>
+                                            {t(
+                                                'Model needs to first use the `ollama pull` command to download locally, please view all models from this page:'
+                                            )}{' '}
+                                            <a
+                                                target='_blank'
+                                                href='https://ollama.com/library'
+                                                rel='noreferrer'
+                                                style={linkStyle}
+                                            >
+                                                Models
+                                            </a>
+                                        </div>
+                                    </div>
+                                }
+                            >
+                                <APIModelSelector provider='AIGPT' currentProvider={values.provider} onBlur={onBlur} />
+                            </FormItem>
+                        </div>
                         <div
                             style={{
                                 display: values.provider === 'Ollama' ? 'block' : 'none',
@@ -3041,12 +3105,12 @@ export function InnerSettings({
                         }}
                     >
                         <div>{t('If you find this tool helpful, you can buy me a cup of coffee.')}</div>
-                        <div>
-                            <img width='330' src={wechat} />
-                        </div>
-                        <div>
-                            <img width='330' src={alipay} />
-                        </div>
+                        {/* <div> */}
+                        {/*   <img width='330' src={wechat} /> */}
+                        {/* </div> */}
+                        {/* <div> */}
+                        {/*   <img width='330' src={alipay} /> */}
+                        {/* </div> */}
                     </div>
                 </ModalBody>
             </Modal>

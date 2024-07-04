@@ -11,6 +11,7 @@ import { VscAzureDevops } from 'react-icons/vsc'
 import { FaGoogle } from 'react-icons/fa'
 import { GiArtificialIntelligence } from 'react-icons/gi'
 import { Ollama } from './ollama'
+import { AIGPT } from './aigpt'
 import { OllamaIcon } from '@/common/components/icons/OllamaIcon'
 import { MoonshotIcon } from '@/common/components/icons/MoonshotIcon'
 import { ClaudeIcon } from '@/common/components/icons/ClaudeIcon'
@@ -34,6 +35,7 @@ export type Provider =
     | 'Moonshot'
     | 'Gemini'
     | 'Ollama'
+    | 'AIGPT'
     | 'Groq'
     | 'Claude'
     | 'Kimi'
@@ -44,6 +46,7 @@ export type Provider =
 export const engineIcons: Record<Provider, IconType> = {
     OpenAI: RiOpenaiFill,
     ChatGPT: RiOpenaiFill,
+    AIGPT: RiOpenaiFill,
     Azure: VscAzureDevops,
     MiniMax: GiArtificialIntelligence,
     Moonshot: MoonshotIcon,
@@ -71,6 +74,7 @@ export const providerToEngine: Record<Provider, { new (): IEngine }> = {
     ChatGLM: ChatGLM,
     Cohere: Cohere,
     DeepSeek: DeepSeek,
+    AIGPT: AIGPT,
 }
 
 export function getEngine(provider: Provider): IEngine {

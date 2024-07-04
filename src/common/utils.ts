@@ -86,6 +86,8 @@ const settingKeys: Record<keyof ISettings, number> = {
     autoHideWindowWhenOutOfFocus: 1,
     proxy: 1,
     customModelName: 1,
+    aigptAPIURL: 1,
+    aigptAPIModel: 1,
     ollamaAPIURL: 1,
     ollamaAPIModel: 1,
     ollamaCustomModelName: 1,
@@ -213,6 +215,12 @@ export async function getSettings(): Promise<ISettings> {
     }
     if (!settings.ollamaAPIURL) {
         settings.ollamaAPIURL = 'http://127.0.0.1:11434'
+    }
+    if (!settings.aigptAPIURL) {
+        settings.aigptAPIURL = 'https://aigpt5.org/api/openai'
+    }
+    if (!settings.aigptAPIModel) {
+        settings.aigptAPIModel = settings.apiModel
     }
     if (!settings.miniMaxAPIModel) {
         settings.miniMaxAPIModel = 'abab5.5-chat'

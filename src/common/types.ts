@@ -118,6 +118,8 @@ export interface ISettings {
         noProxy?: string
     }
     customModelName?: string
+    aigptAPIURL: string
+    aigptAPIModel: string
     ollamaAPIURL: string
     ollamaAPIModel: string
     ollamaCustomModelName: string

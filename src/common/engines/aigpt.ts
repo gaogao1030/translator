@@ -1,22 +1,21 @@
-import { CUSTOM_MODEL_ID } from '../constants'
 import { getSettings } from '../utils'
 import { AbstractOpenAI } from './abstract-openai'
 import { IModel } from './interfaces'
 
-export class Ollama extends AbstractOpenAI {
-    supportCustomModel(): boolean {
-        return true
-    }
-
-    isLocal() {
-        return true
+export class AIGPT extends AbstractOpenAI {
+    async getHeaders(): Promise<Record<string, string>> {
+        const code = await this.getAPIKey()
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer nk-${code}`,
+        }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async listModels(apiKey_: string | undefined): Promise<IModel[]> {
         return [
-            { id: 'gemma2:9b', name: 'Genma2 9B' },
-            { id: 'llama3:latest', name: 'llama3 7B' },
+            { id: 'gpt-3.5-turbo', name: 'GPT-3.5-Turbo' },
+            { id: 'gpt-4o', name: 'GPT-4O' },
         ]
     }
 
@@ -33,19 +32,19 @@ export class Ollama extends AbstractOpenAI {
 
     async getAPIModel(): Promise<string> {
         const settings = await getSettings()
-        if (settings.ollamaAPIModel === CUSTOM_MODEL_ID) {
-            return settings.ollamaCustomModelName
-        }
-        return settings.ollamaAPIModel
+        return settings.aigptAPIModel
     }
 
     async getAPIKey(): Promise<string> {
-        return 'donotneed'
+        const settings = await getSettings()
+        const apiKeys = (settings.apiKeys ?? '').split(',').map((s) => s.trim())
+        const apikey = apiKeys[Math.floor(Math.random() * apiKeys.length)] ?? ''
+        return apikey
     }
 
     async getAPIURL(): Promise<string> {
         const settings = await getSettings()
-        return settings.ollamaAPIURL
+        return settings.aigptAPIURL
     }
 
     async getAPIURLPath(): Promise<string> {
