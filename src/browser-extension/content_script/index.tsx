@@ -8,7 +8,7 @@ import { getContainer, queryPopupCardElement, queryPopupThumbElement } from './u
 import { create } from 'jss'
 import preset from 'jss-preset-default'
 import { JssProvider, createGenerateId } from 'react-jss'
-import { Client as Styletron } from 'styletron-engine-atomic'
+import { Client as Styletron } from 'styletron-engine-monolithic'
 import { createRoot, Root } from 'react-dom/client'
 import hotkeys from 'hotkeys-js'
 import '@/common/i18n.js'

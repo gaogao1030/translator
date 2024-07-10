@@ -7,11 +7,20 @@ import { fileURLToPath, URL } from 'url'
 import { getManifest } from './src/browser-extension/manifest'
 
 const isDev = process.env.NODE_ENV === 'development'
+function removeRefreshRuntime() {
+    return {
+        name: 'remove-refresh-runtime',
+        transformIndexHtml(html: string) {
+            return html.replace(/<script type="module">[\s\S]*?<\/script>/, '')
+        },
+    }
+}
 
 export default defineConfig({
     plugins: [
         tsconfigPaths(),
         react(),
+        removeRefreshRuntime(),
         svgr(),
         webExtension({
             manifest: getManifest('chromium'),

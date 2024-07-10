@@ -1,4 +1,4 @@
-import { Theme } from 'baseui-sd/theme'
+import { Theme } from 'baseui/theme'
 import { TranslateMode } from './translate'
 import { TTSProvider } from './tts/types'
 import { Provider } from './engines'

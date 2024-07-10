@@ -28,7 +28,7 @@ import AppConfig from '../../../package.json'
 import { useSettings } from '../hooks/useSettings'
 import { defaultTTSProvider, langCode2TTSLang, ttsLangTestTextMap } from '../tts'
 import { RiDeleteBin5Line } from 'react-icons/ri'
-import { IoIosSave, IoMdAdd } from 'react-icons/io'
+import { IoIosHelpCircleOutline, IoIosSave, IoMdAdd } from 'react-icons/io'
 import { TTSProvider } from '../tts/types'
 import { fetchEdgeVoices } from '../tts/edge-tts'
 import { useThemeType } from '../hooks/useThemeType'
@@ -2187,69 +2187,712 @@ export function InnerSettings({
                                 >
                                     <Input autoComplete='off' size='compact' />
                                 </FormItem>
-                                <FormItem name='defaultTranslateMode' label={t('Default Action')}>
-                                    <TranslateModeSelector onBlur={onBlur} />
-                                </FormItem>
-                                <FormItem name='defaultTargetLanguage' label={t('Default target language')}>
-                                    <LanguageSelector onBlur={onBlur} />
-                                </FormItem>
-                                <FormItem name='themeType' label={t('Theme')}>
-                                    <ThemeTypeSelector onBlur={onBlur} />
-                                </FormItem>
-                                <FormItem
-                                    style={{
-                                        display: isDesktopApp ? 'block' : 'none',
-                                    }}
-                                    name='enableBackgroundBlur'
-                                    label={t('Window background blur')}
-                                    caption={t(
-                                        "If the window background blur effect is enabled, please ensure to set the 'Theme' to 'Follow the System', as it is currently not possible to manually switch between light and dark themes when the window background blur is active."
-                                    )}
-                                >
-                                    <MyCheckbox onBlur={onBlur} />
-                                </FormItem>
-                                <FormItem name='fontSize' label={t('Font size')}>
-                                    <NumberInput />
-                                </FormItem>
-                                <FormItem
-                                    name='alwaysShowIcons'
-                                    label={t('Show icon when text is selected')}
-                                    caption={
-                                        isDesktopApp && (
-                                            <div
-                                                style={{
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: 6,
-                                                }}
-                                            >
-                                                {t(
-                                                    'It is highly recommended to disable this feature and use the Clip Extension'
-                                                )}
-                                                <a
-                                                    href='https://github.com/openai-translator/openai-translator/blob/main/CLIP-EXTENSIONS.md'
-                                                    target='_blank'
-                                                    rel='noreferrer'
-                                                    style={linkStyle}
-                                                >
-                                                    {t('Clip Extension')}
-                                                </a>
-                                            </div>
-                                        )
-                                    }
-                                >
-                                    <AlwaysShowIconsCheckbox onBlur={onBlur} />
-                                </FormItem>
-                                <FormItem name='autoTranslate' label={t('Auto Translate')}>
-                                    <AutoTranslateCheckbox onBlur={onBlur} />
-                                </FormItem>
-                                <FormItem name='selectInputElementsText' label={t('Word selection in input')}>
-                                    <SelectInputElementsCheckbox onBlur={onBlur} />
-                                </FormItem>
                             </div>
                         </div>
+                        <div
+                            style={{
+                                display: values.provider === 'Groq' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'Groq'}
+                                name='groqAPIKey'
+                                label='Groq API Key'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://console.groq.com/keys'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            GroqCloud
+                                        </a>{' '}
+                                        {t('to get your API Key.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem name='groqAPIModel' label={t('API Model')} required={values.provider === 'Groq'}>
+                                <APIModelSelector
+                                    provider='Groq'
+                                    currentProvider={values.provider}
+                                    apiKey={values.groqAPIKey}
+                                    onBlur={onBlur}
+                                />
+                            </FormItem>
+                            <div
+                                style={{
+                                    display: values.groqAPIModel === CUSTOM_MODEL_ID ? 'block' : 'none',
+                                }}
+                            >
+                                <FormItem
+                                    name='groqCustomModelName'
+                                    label={t('Custom Model Name')}
+                                    required={values.provider === 'Groq' && values.groqAPIModel === CUSTOM_MODEL_ID}
+                                >
+                                    <Input autoComplete='off' size='compact' />
+                                </FormItem>
+                            </div>
+                            <FormItem
+                                name='groqAPIURL'
+                                label={t('API URL')}
+                                required={values.provider === 'Groq'}
+                                caption={t('Generally, there is no need to modify this item.')}
+                            >
+                                <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='groqAPIURLPath'
+                                label={t('API URL Path')}
+                                required={values.provider === 'Groq'}
+                                caption={t('Generally, there is no need to modify this item.')}
+                            >
+                                <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'Claude' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'Claude'}
+                                name='claudeAPIKey'
+                                label='Claude API Key'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://console.anthropic.com/settings/keys'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            Anthropic Console
+                                        </a>{' '}
+                                        {t('to get your API Key.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='claudeAPIModel'
+                                label={t('API Model')}
+                                required={values.provider === 'Claude'}
+                            >
+                                <APIModelSelector
+                                    provider='Claude'
+                                    currentProvider={values.provider}
+                                    apiKey={values.claudeAPIKey}
+                                    onBlur={onBlur}
+                                />
+                            </FormItem>
+                            <div
+                                style={{
+                                    display: values.claudeAPIModel === CUSTOM_MODEL_ID ? 'block' : 'none',
+                                }}
+                            >
+                                <FormItem
+                                    name='claudeCustomModelName'
+                                    label={t('Custom Model Name')}
+                                    required={values.provider === 'Claude' && values.claudeAPIModel === CUSTOM_MODEL_ID}
+                                >
+                                    <Input autoComplete='off' size='compact' />
+                                </FormItem>
+                            </div>
+                            <FormItem
+                                name='claudeAPIURL'
+                                label={t('API URL')}
+                                required={values.provider === 'Claude'}
+                                caption={t('Generally, there is no need to modify this item.')}
+                            >
+                                <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='claudeAPIURLPath'
+                                label={t('API URL Path')}
+                                required={values.provider === 'Claude'}
+                                caption={t('Generally, there is no need to modify this item.')}
+                            >
+                                <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'Kimi' && utils.isDesktopApp() ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'Kimi' && utils.isDesktopApp()}
+                                name='kimiRefreshToken'
+                                label='Kimi Refresh Token'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href={
+                                                values?.i18n?.toLowerCase().includes('zh')
+                                                    ? 'https://github.com/openai-translator/openai-translator/blob/main/docs/kimi-cn.md'
+                                                    : 'https://github.com/openai-translator/openai-translator/blob/main/docs/kimi.md'
+                                            }
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            Tutorial
+                                        </a>{' '}
+                                        {t('to get your refresh_token.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                required={values.provider === 'Kimi' && utils.isDesktopApp()}
+                                name='kimiAccessToken'
+                                label='Kimi Access Token'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href={
+                                                values?.i18n?.toLowerCase().includes('zh')
+                                                    ? 'https://github.com/openai-translator/openai-translator/blob/main/docs/kimi-cn.md'
+                                                    : 'https://github.com/openai-translator/openai-translator/blob/main/docs/kimi.md'
+                                            }
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            Tutorial
+                                        </a>{' '}
+                                        {t('to get your access_token.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'ChatGLM' && utils.isDesktopApp() ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'ChatGLM' && utils.isDesktopApp()}
+                                name='chatglmRefreshToken'
+                                label={`${t('ChatGLM')} Refresh Token`}
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href={
+                                                values?.i18n?.toLowerCase().includes('zh')
+                                                    ? 'https://github.com/openai-translator/openai-translator/blob/main/docs/chatglm-cn.md'
+                                                    : 'https://github.com/openai-translator/openai-translator/blob/main/docs/chatglm.md'
+                                            }
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            Tutorial
+                                        </a>{' '}
+                                        {t('to get your refresh_token.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                required={values.provider === 'ChatGLM' && utils.isDesktopApp()}
+                                name='chatglmAccessToken'
+                                label={`${t('ChatGLM')} Token`}
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href={
+                                                values?.i18n?.toLowerCase().includes('zh')
+                                                    ? 'https://github.com/openai-translator/openai-translator/blob/main/docs/chatglm-cn.md'
+                                                    : 'https://github.com/openai-translator/openai-translator/blob/main/docs/chatglm.md'
+                                            }
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            Tutorial
+                                        </a>{' '}
+                                        {t('to get your token.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'Gemini' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem name='geminiAPIURL' label={t('API URL')} required={values.provider === 'Gemini'}>
+                                <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                required={values.provider === 'Gemini'}
+                                name='geminiAPIKey'
+                                label='Gemini API Key'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://makersuite.google.com/app/apikey'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            Google AI Studio
+                                        </a>{' '}
+                                        {t('to get your API Key.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='geminiAPIModel'
+                                label={t('API Model')}
+                                required={values.provider === 'Gemini'}
+                            >
+                                <APIModelSelector
+                                    provider='Gemini'
+                                    currentProvider={values.provider}
+                                    apiKey={values.geminiAPIKey}
+                                    onBlur={onBlur}
+                                />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'Cohere' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'Cohere'}
+                                name='cohereAPIKey'
+                                label='Cohere API Key'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://dashboard.cohere.com/api-keys'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            Cohere Dashboard
+                                        </a>{' '}
+                                        {t('to get your API Key.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='cohereAPIModel'
+                                label={t('API Model')}
+                                required={values.provider === 'Cohere'}
+                            >
+                                <APIModelSelector
+                                    provider='Cohere'
+                                    currentProvider={values.provider}
+                                    apiKey={values.cohereAPIKey}
+                                    onBlur={onBlur}
+                                />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'DeepSeek' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'DeepSeek'}
+                                name='deepSeekAPIKey'
+                                label='DeepSeek API Key'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://platform.deepseek.com/api_keys'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            DeepSeek Dashboard
+                                        </a>{' '}
+                                        {t('to get your API Key.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='deepSeekAPIModel'
+                                label={t('API Model')}
+                                required={values.provider === 'DeepSeek'}
+                            >
+                                <APIModelSelector
+                                    provider='DeepSeek'
+                                    currentProvider={values.provider}
+                                    apiKey={values.deepSeekAPIKey}
+                                    onBlur={onBlur}
+                                />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'OpenAI' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'OpenAI'}
+                                name='apiKeys'
+                                label={t('API Key')}
+                                caption={
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            gap: 3,
+                                        }}
+                                    >
+                                        <div>
+                                            {t('Go to the')}{' '}
+                                            <a
+                                                target='_blank'
+                                                href='https://platform.openai.com/account/api-keys'
+                                                rel='noreferrer'
+                                                style={linkStyle}
+                                            >
+                                                {t('OpenAI page')}
+                                            </a>{' '}
+                                            {t(
+                                                'to get your API Key. You can separate multiple API Keys with English commas to achieve quota doubling and load balancing.'
+                                            )}
+                                        </div>
+                                        {openaiAPIKeyPromotion && (
+                                            <div className={styles.promotion}>
+                                                <div
+                                                    onClick={(e) => {
+                                                        if ((e.target as HTMLElement).tagName === 'A') {
+                                                            const href = (e.target as HTMLAnchorElement).href
+                                                            if (href && href.startsWith('http')) {
+                                                                e.preventDefault()
+                                                                e.stopPropagation()
+                                                                setDisclaimerPromotion(openaiAPIKeyPromotion)
+                                                                setDisclaimerAgreeLink(href)
+                                                            }
+                                                        }
+                                                    }}
+                                                >
+                                                    {renderI18nPromotionContent(openaiAPIKeyPromotion.promotion)}
+                                                </div>
+                                                {openaiAPIKeyPromotion.configuration_doc_link && (
+                                                    <div
+                                                        style={{
+                                                            display: 'flex',
+                                                            flexDirection: 'row',
+                                                            alignItems: 'center',
+                                                            gap: 3,
+                                                        }}
+                                                    >
+                                                        <IoIosHelpCircleOutline size={12} />
+                                                        <a
+                                                            href={openaiAPIKeyPromotion.configuration_doc_link}
+                                                            target='_blank'
+                                                            rel='noreferrer'
+                                                        >
+                                                            {t('How to Use')}
+                                                        </a>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                }
+                            >
+                                <Input
+                                    autoFocus={!openaiAPIKeyPromotion}
+                                    type='password'
+                                    size='compact'
+                                    name='apiKey'
+                                    onBlur={onBlur}
+                                />
+                            </FormItem>
+                            <FormItem name='apiModel' label={t('API Model')} required={values.provider === 'OpenAI'}>
+                                <APIModelSelector
+                                    provider='OpenAI'
+                                    currentProvider={values.provider}
+                                    apiKey={values.apiKeys}
+                                    onBlur={onBlur}
+                                />
+                            </FormItem>
+                            <div
+                                style={{
+                                    display: values.apiModel === CUSTOM_MODEL_ID ? 'block' : 'none',
+                                }}
+                            >
+                                <FormItem
+                                    name='customModelName'
+                                    label={t('Custom Model Name')}
+                                    required={values.provider === 'OpenAI' && values.apiModel === CUSTOM_MODEL_ID}
+                                >
+                                    <Input autoComplete='off' size='compact' />
+                                </FormItem>
+                            </div>
+                            <FormItem name='apiURL' label={t('API URL')} required={values.provider === 'OpenAI'}>
+                                <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='apiURLPath'
+                                label={t('API URL Path')}
+                                required={values.provider === 'OpenAI'}
+                            >
+                                <Input size='compact' />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'Azure' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'Azure'}
+                                name='azureAPIKeys'
+                                label={t('API Key')}
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://learn.microsoft.com/en-us/azure/cognitive-services/openai/chatgpt-quickstart?tabs=command-line&pivots=rest-api#retrieve-key-and-endpoint'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            {t('Azure OpenAI Service page')}
+                                        </a>{' '}
+                                        {t(
+                                            'to get your API Key. You can separate multiple API Keys with English commas to achieve quota doubling and load balancing.'
+                                        )}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='azureAPIModel'
+                                label={t('API Model')}
+                                required={values.provider === 'Azure'}
+                            >
+                                <APIModelSelector
+                                    provider='Azure'
+                                    currentProvider={values.provider}
+                                    apiKey={values.azureAPIKeys}
+                                    onBlur={onBlur}
+                                />
+                            </FormItem>
+                            <FormItem name='azureAPIURL' label={t('API URL')} required={values.provider === 'Azure'}>
+                                <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='azureAPIURLPath'
+                                label={t('API URL Path')}
+                                required={values.provider === 'Azure'}
+                            >
+                                <Input size='compact' />
+                            </FormItem>
+                            <FormItem name='azMaxWords' label='Max Tokens' required={values.provider === 'Azure'}>
+                                <NumberInput size='compact' />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'ChatGPT' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                name='chatgptModel'
+                                label={t('API Model')}
+                                required={values.provider === 'ChatGPT'}
+                            >
+                                <APIModelSelector
+                                    provider='ChatGPT'
+                                    currentProvider={values.provider}
+                                    onBlur={onBlur}
+                                />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'MiniMax' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'MiniMax'}
+                                name='miniMaxGroupID'
+                                label='MiniMax Group ID'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://api.minimax.chat/user-center/basic-information'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            {t('MiniMax page')}
+                                        </a>{' '}
+                                        {t('to get your Group ID.')}
+                                    </div>
+                                }
+                            >
+                                <Input size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                required={values.provider === 'MiniMax'}
+                                name='miniMaxAPIKey'
+                                label='MiniMax API Key'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://api.minimax.chat/user-center/basic-information/interface-key'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            {t('MiniMax page')}
+                                        </a>{' '}
+                                        {t('to get your API Key.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='miniMaxAPIModel'
+                                label={t('API Model')}
+                                required={values.provider === 'MiniMax'}
+                            >
+                                <APIModelSelector
+                                    provider='MiniMax'
+                                    currentProvider={values.provider}
+                                    onBlur={onBlur}
+                                    apiKey={values.miniMaxAPIKey}
+                                />
+                            </FormItem>
+                        </div>
+                        <div
+                            style={{
+                                display: values.provider === 'Moonshot' ? 'block' : 'none',
+                            }}
+                        >
+                            <FormItem
+                                required={values.provider === 'Moonshot'}
+                                name='moonshotAPIKey'
+                                label='Moonshot API Key'
+                                caption={
+                                    <div>
+                                        {t('Go to the')}{' '}
+                                        <a
+                                            target='_blank'
+                                            href='https://www.moonshot.cn/'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            Moonshot Page
+                                        </a>{' '}
+                                        {t('to get your API Key.')}
+                                    </div>
+                                }
+                            >
+                                <Input autoFocus type='password' size='compact' onBlur={onBlur} />
+                            </FormItem>
+                            <FormItem
+                                name='moonshotAPIModel'
+                                label={t('API Model')}
+                                required={values.provider === 'Moonshot'}
+                            >
+                                <APIModelSelector
+                                    provider='Moonshot'
+                                    currentProvider={values.provider}
+                                    onBlur={onBlur}
+                                    apiKey={values.moonshotAPIKey}
+                                />
+                            </FormItem>
+                        </div>
+                        <FormItem name='defaultTranslateMode' label={t('Default Action')}>
+                            <TranslateModeSelector onBlur={onBlur} />
+                        </FormItem>
+                        <FormItem name='defaultTargetLanguage' label={t('Default target language')}>
+                            <LanguageSelector onBlur={onBlur} />
+                        </FormItem>
                         <FormItem name='languageDetectionEngine' label={t('Language detection engine')}>
                             <LanguageDetectionEngineSelector onBlur={onBlur} />
+                        </FormItem>
+                        <FormItem name='themeType' label={t('Theme')}>
+                            <ThemeTypeSelector onBlur={onBlur} />
+                        </FormItem>
+                        <FormItem
+                            style={{
+                                display: isDesktopApp ? 'block' : 'none',
+                            }}
+                            name='enableBackgroundBlur'
+                            label={t('Window background blur')}
+                            caption={t(
+                                "If the window background blur effect is enabled, please ensure to set the 'Theme' to 'Follow the System', as it is currently not possible to manually switch between light and dark themes when the window background blur is active."
+                            )}
+                        >
+                            <MyCheckbox onBlur={onBlur} />
+                        </FormItem>
+                        <FormItem name='fontSize' label={t('Font size')}>
+                            <NumberInput />
+                        </FormItem>
+                        <FormItem
+                            name='alwaysShowIcons'
+                            label={t('Show icon when text is selected')}
+                            caption={
+                                isDesktopApp && (
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 6,
+                                        }}
+                                    >
+                                        {t(
+                                            'It is highly recommended to disable this feature and use the Clip Extension'
+                                        )}
+                                        <a
+                                            href='https://github.com/openai-translator/openai-translator/blob/main/CLIP-EXTENSIONS.md'
+                                            target='_blank'
+                                            rel='noreferrer'
+                                            style={linkStyle}
+                                        >
+                                            {t('Clip Extension')}
+                                        </a>
+                                    </div>
+                                )
+                            }
+                        >
+                            <AlwaysShowIconsCheckbox onBlur={onBlur} />
+                        </FormItem>
+                        <FormItem name='autoTranslate' label={t('Auto Translate')}>
+                            <AutoTranslateCheckbox onBlur={onBlur} />
                         </FormItem>
                         <FormItem
                             style={{
@@ -2259,6 +2902,9 @@ export function InnerSettings({
                             label={t('Fixed Position')}
                         >
                             <RestorePreviousPositionCheckbox onBlur={onBlur} />
+                        </FormItem>
+                        <FormItem name='selectInputElementsText' label={t('Word selection in input')}>
+                            <SelectInputElementsCheckbox onBlur={onBlur} />
                         </FormItem>
                         {isTauri && (
                             <FormItem name='runAtStartup' label={t('Run at startup')}>

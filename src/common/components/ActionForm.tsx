@@ -2,9 +2,9 @@ import { useTranslation } from 'react-i18next'
 import { ICreateActionOption } from '../internal-services/action'
 import { Action } from '../internal-services/db'
 import { createForm } from './Form'
-import { Input } from 'baseui-sd/input'
-import { Textarea } from 'baseui-sd/textarea'
-import { Button } from 'baseui-sd/button'
+import { Input, SIZE } from 'baseui/input'
+import { Textarea } from 'baseui/textarea'
+import { Button } from 'baseui/button'
 import { useCallback, useEffect, useState } from 'react'
 import { actionService } from '../services/action'
 import { createUseStyles } from 'react-jss'
@@ -128,7 +128,7 @@ export function ActionForm(props: IActionFormProps) {
     return (
         <Form initialValues={values} onValuesChange={handleValuesChange} onFinish={onSubmit}>
             <FormItem required name='name' label={t('Name')}>
-                <Input size='compact' />
+                <Input size={SIZE.compact} />
             </FormItem>
             <FormItem required name='icon' label={t('Icon')}>
                 <IconPicker />

@@ -1,7 +1,7 @@
 import '../enable-dev-hmr'
 import { createRoot } from 'react-dom/client'
 import { Translator } from '../../common/components/Translator'
-import { Client as Styletron } from 'styletron-engine-atomic'
+import { Client as Styletron } from 'styletron-engine-monolithic'
 import '../../common/i18n.js'
 import './index.css'
 import { PREFIX } from '../../common/constants'

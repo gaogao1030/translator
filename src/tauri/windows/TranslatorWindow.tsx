@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 import { Translator } from '../../common/components/Translator'
-import { Client as Styletron } from 'styletron-engine-atomic'
+import { Client as Styletron } from 'styletron-engine-monolithic'
 import { listen, Event } from '@tauri-apps/api/event'
 import { bindDisplayWindowHotkey, bindHotkey, bindOCRHotkey, bindWritingHotkey, onSettingsSave } from '../utils'
 import { v4 as uuidv4 } from 'uuid'

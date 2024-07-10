@@ -1216,7 +1216,27 @@ function InnerTranslator(props: IInnerTranslatorProps) {
         if (!settings) {
             return
         }
-        if (settings.provider === 'AIGPT' && !settings.apiKeys) {
+        if (settings.provider === 'OpenAI' && !settings.apiKeys) {
+            setShowSettings(true)
+            return
+        }
+        if (settings.provider === 'Azure' && !settings.azureAPIKeys) {
+            setShowSettings(true)
+            return
+        }
+        if (settings.provider === 'ChatGPT' && !settings.chatgptModel) {
+            setShowSettings(true)
+            return
+        }
+        if (settings.provider === 'MiniMax' && !settings.miniMaxAPIKey) {
+            setShowSettings(true)
+            return
+        }
+        if (settings.provider === 'Moonshot' && !settings.moonshotAPIKey) {
+            setShowSettings(true)
+            return
+        }
+        if (settings.provider === 'Groq' && !settings.groqAPIKey) {
             setShowSettings(true)
             return
         }
