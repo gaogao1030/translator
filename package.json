@@ -103,7 +103,7 @@
     "react-window": "^1.8.10",
     "styletron-engine-monolithic": "^1.0.0",
     "styletron-react": "^6.1.1",
-    "swr": "^2.2.0",
+    "swr": "^2.2.5",
     "tesseract.js": "^4.0.2",
     "underscore": "^1.13.6",
     "url-join-ts": "^1.0.5",
