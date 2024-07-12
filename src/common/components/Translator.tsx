@@ -23,7 +23,6 @@ import { Button } from 'baseui/button'
 import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorFallback } from '../components/ErrorFallback'
 import {
-    defaultAPIURL,
     exportToCsv,
     isDesktopApp,
     isTauri,
@@ -42,7 +41,6 @@ import { FcIdea } from 'react-icons/fc'
 import rocket from '../assets/images/rocket.gif'
 import partyPopper from '../assets/images/party-popper.gif'
 import { listen, Event } from '@tauri-apps/api/event'
-import IpLocationNotification from '../components/IpLocationNotification'
 import { HighlightInTextarea } from '../highlight-in-textarea'
 import { LRUCache } from 'lru-cache'
 import { ISettings, IThemedStyleProps } from '../types'
@@ -1810,11 +1808,11 @@ function InnerTranslator(props: IInnerTranslatorProps) {
                             settings.enableBackgroundBlur && styles.popupCardContentContainerBackgroundBlur
                         )}
                     >
-                        {settings?.apiURL === defaultAPIURL && (
-                            <div>
-                                <IpLocationNotification showSettings={showSettings} />
-                            </div>
-                        )}
+                        {/* {settings?.apiURL === defaultAPIURL && ( */}
+                        {/*   <div> */}
+                        {/*     <IpLocationNotification showSettings={showSettings} /> */}
+                        {/*   </div> */}
+                        {/* )} */}
                         <div ref={editorContainerRef} className={styles.popupCardEditorContainer}>
                             <div
                                 style={{

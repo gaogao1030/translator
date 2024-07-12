@@ -143,4 +143,5 @@ export interface ISettings {
     fontSize: number
     uiFontSize: number
     iconSize: number
+    errMsg?: string
 }

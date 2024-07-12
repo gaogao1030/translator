@@ -1,6 +1,7 @@
 import { getSettings } from '../utils'
+import { getUniversalFetch } from '../universal-fetch'
 import { AbstractOpenAI } from './abstract-openai'
-import { IModel } from './interfaces'
+import { IModel, UsageResult } from './interfaces'
 
 export class AIGPT extends AbstractOpenAI {
     async getHeaders(): Promise<Record<string, string>> {
@@ -48,6 +49,29 @@ export class AIGPT extends AbstractOpenAI {
     }
 
     async getAPIURLPath(): Promise<string> {
-        return '/v1/chat/completions'
+        return '/openai/v1/chat/completions'
+    }
+
+    async getUsage(): Promise<UsageResult> {
+        const headers = await this.getHeaders()
+        const apiURL = await this.getAPIURL()
+        const usageUrl = `${apiURL}/aigpt/v1/code/total_usage`
+        const subscribeUrl = `${apiURL}/aigpt/v1/code`
+        const fetcher = getUniversalFetch()
+
+        const [usageResponse, statusResponse] = await Promise.all([
+            fetcher(usageUrl, { method: 'GET', headers }),
+            fetcher(subscribeUrl, { method: 'GET', headers }),
+        ])
+
+        if (usageResponse.status === 200 && statusResponse.status === 200) {
+            const [usageJson, statusJson] = await Promise.all([usageResponse.json(), statusResponse.json()])
+            const result = { ...statusJson, ...usageJson, status: 200 }
+
+            return result
+        } else {
+            const statusJson = await statusResponse.json()
+            return { ...statusJson, status: statusResponse.status }
+        }
     }
 }

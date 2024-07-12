@@ -6,7 +6,7 @@ export function getManifest(browser: 'firefox' | 'chromium') {
         manifest_version: 3,
 
         name: 'AI Translator',
-        description: `OpenAI-Translator is a browser extension that uses the ChatGPT API for translation.`,
+        description: `AI-Translator is a browser extension that uses the LLM API for translation.`,
         version: version,
         icons: {
             '16': 'icon.png',

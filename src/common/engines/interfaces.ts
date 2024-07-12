@@ -20,6 +20,12 @@ export interface IMessageRequest {
     signal: AbortSignal
 }
 
+export interface UsageResult {
+    status: number
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any
+}
+
 export interface IEngine {
     checkLogin: () => Promise<boolean>
     isLocal(): boolean
@@ -27,4 +33,5 @@ export interface IEngine {
     getModel(): Promise<string>
     listModels(apiKey: string | undefined): Promise<IModel[]>
     sendMessage(req: IMessageRequest): Promise<void>
+    getUsage(): Promise<UsageResult>
 }

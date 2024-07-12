@@ -10,7 +10,7 @@ import { commands } from '@/tauri/bindings'
 export const defaultAPIURL = 'https://api.openai.com'
 export const defaultAPIURLPath = '/v1/chat/completions'
 export const defaultProvider = 'AIGPT'
-export const defaultAPIModel = 'gpt-4-o'
+export const defaultAPIModel = 'gpt-4o'
 
 export const defaultChatGPTAPIAuthSessionAPIURL = 'https://chat.openai.com/api/auth/session'
 export const defaultChatGPTWebAPI = 'https://chat.openai.com/backend-api'
@@ -113,6 +113,7 @@ const settingKeys: Record<keyof ISettings, number> = {
     fontSize: 1,
     uiFontSize: 1,
     iconSize: 1,
+    errMsg: 1,
 }
 
 export async function getSettings(): Promise<ISettings> {
@@ -198,7 +199,7 @@ export async function getSettings(): Promise<ISettings> {
         }
     }
     if (!settings.languageDetectionEngine) {
-        settings.languageDetectionEngine = 'baidu'
+        settings.languageDetectionEngine = 'local'
     }
     if (!settings.proxy) {
         settings.proxy = {
@@ -216,8 +217,11 @@ export async function getSettings(): Promise<ISettings> {
     if (!settings.ollamaAPIURL) {
         settings.ollamaAPIURL = 'http://127.0.0.1:11434'
     }
+    if (!settings.ollamaAPIModel) {
+        settings.ollamaAPIModel = 'gemma2:9b'
+    }
     if (!settings.aigptAPIURL) {
-        settings.aigptAPIURL = 'https://aigpt5.org/api/openai'
+        settings.aigptAPIURL = 'https://aigpt5.org/api'
     }
     if (!settings.aigptAPIModel) {
         settings.aigptAPIModel = settings.apiModel

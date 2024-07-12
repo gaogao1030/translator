@@ -93,3 +93,7 @@ export const shouldNotBeEqual =
     (val: any, msg: string): Validator =>
     (_, value) =>
         value !== val ? Promise.resolve() : Promise.reject(msg)
+
+export const checkAIgptCode = (msg: any, code: string): Validator => {
+    return (_, value) => (msg && code === value ? Promise.reject(msg) : Promise.resolve())
+}
